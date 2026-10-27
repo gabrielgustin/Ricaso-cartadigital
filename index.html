@@ -37,10 +37,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 /* ---------- hero ---------- */
 .hero{position:relative;padding:28px 0 22px;text-align:center}
 .hero-in{display:flex;align-items:center;justify-content:center;gap:clamp(8px,4vw,40px)}
-.logo{--sw:4px;--ts:6px 7px 0;font-size:clamp(4.2rem,16vw,8.5rem);transform:rotate(-3deg);display:inline-block}
+.logo{--sw:4px;--ts:6px 7px 0;font-size:clamp(4.2rem,16vw,8.5rem);transform:rotate(-3deg);display:inline-block;white-space:nowrap}
 .tagline{margin-top:14px;font-weight:900;font-size:1rem;letter-spacing:.02em}
 .mascot{height:auto;display:block}
-.hero .mascot{width:clamp(120px,28vw,220px);flex:none;animation:bob 3.2s ease-in-out infinite}
+.hero .mascot{width:clamp(140px,30vw,240px);flex:none}
 .hero .bubble{position:absolute;top:10px;right:max(0px,calc(50% - 400px));transform:rotate(4deg)}
 .status{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:6px 14px;border:3px solid var(--ink);border-radius:999px;background:var(--paper);font-weight:900;font-size:.9rem;box-shadow:3px 3px 0 var(--ink)}
 .status i{width:10px;height:10px;border-radius:50%;background:#20b25a;box-shadow:0 0 0 3px rgba(32,178,90,.25)}
@@ -67,7 +67,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .sec{break-inside:avoid;margin-bottom:38px}
 .sec-h{display:flex;align-items:flex-end;flex-wrap:wrap;gap:6px 14px;margin-bottom:12px;min-height:52px;position:relative}
 .aside{margin-left:auto;display:flex;align-items:flex-end;gap:4px}
-.aside .mascot{width:84px;flex:none}
+.aside .mascot{height:112px;width:auto;flex:none}
 .bubble{position:relative;background:var(--paper);border:3px solid var(--ink);border-radius:22px;padding:9px 13px 7px;max-width:180px;font-family:'Luckiest Guy';font-size:.82rem;line-height:1.1;letter-spacing:.03em;text-align:center;text-transform:uppercase;box-shadow:3px 3px 0 var(--ink)}
 .bubble::after{content:"";position:absolute;right:-11px;bottom:12px;width:14px;height:14px;background:var(--paper);border:3px solid var(--ink);border-left:0;border-bottom:0;transform:rotate(45deg) skew(10deg,10deg)}
 .hero .bubble::after{right:auto;left:18px;bottom:-10px;transform:rotate(135deg)}
@@ -114,13 +114,44 @@ button{font:inherit;color:inherit;cursor:pointer}
 .toast{position:fixed;left:50%;bottom:90px;transform:translate(-50%,20px);opacity:0;z-index:40;padding:10px 18px 8px;background:var(--ink);color:#fff;border-radius:999px;font-family:'Luckiest Guy';letter-spacing:.04em;transition:.25s;pointer-events:none}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
-@keyframes bob{50%{transform:translateY(-6px) rotate(-2deg)}}
+/* ---------- animaciones: solo transform/opacity y pausadas fuera de pantalla, para no volver a trabar el scroll ---------- */
+.fx{animation-play-state:paused}
+.fx.on{animation-play-state:running}
+.mascot.fx{transform-origin:50% 100%;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.i-bob{animation:pop .8s cubic-bezier(.34,1.56,.64,1) both,bob 3.2s .8s ease-in-out infinite}
+.i-chomp{animation:pop .8s cubic-bezier(.34,1.56,.64,1) both,chomp 1.4s .8s ease-in-out infinite}
+.i-sway{animation:pop .8s cubic-bezier(.34,1.56,.64,1) both,sway 3s .8s ease-in-out infinite}
+.i-groove{animation:pop .8s cubic-bezier(.34,1.56,.64,1) both,groove 1.2s .8s ease-in-out infinite}
+.bubble.fx{transform-origin:100% 100%;animation:bub .55s .3s cubic-bezier(.34,1.56,.64,1) both,float 3.4s 1s ease-in-out infinite}
+.hero .bubble.fx{transform-origin:0 100%}
+.title.fx{animation:tpop .6s cubic-bezier(.34,1.56,.64,1) both}
+.deco.fx{transform-origin:50% 100%;animation:sway 4s ease-in-out infinite}
+.logo span{display:inline-block;animation:drop .7s calc(var(--i) * 70ms + .1s) cubic-bezier(.34,1.56,.64,1) both}
+.nav a[aria-current="true"]{animation:chip .4s cubic-bezier(.34,1.56,.64,1)}
+.row{transition:transform .12s}
+.row:active{transform:scale(.985)}
+.fab{animation:nudge 5s 2s ease-in-out infinite}
+.status i{position:relative}
+.status i::after{content:"";position:absolute;inset:0;border-radius:50%;background:inherit;animation:ping 1.8s ease-out infinite}
+@keyframes pop{0%{transform:translateY(35%) scale(.5) rotate(-10deg);opacity:0}60%{opacity:1;transform:translateY(-4%) scale(1.06) rotate(3deg)}100%{transform:none}}
+@keyframes bob{50%{transform:translateY(-7px) rotate(-2deg)}}
+@keyframes chomp{0%,60%,100%{transform:none}30%{transform:translateY(3px) scale(1.03,.96)}45%{transform:translateY(-4px) rotate(-2deg) scale(.98,1.03)}}
+@keyframes sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes groove{0%,100%{transform:rotate(-3deg)}25%,75%{transform:translateY(-6px)}50%{transform:rotate(3deg)}}
+@keyframes bub{0%{transform:scale(0) rotate(-12deg);opacity:0}100%{transform:none;opacity:1}}
+@keyframes float{50%{transform:translateY(-4px) rotate(-1.5deg)}}
+@keyframes tpop{0%{transform:scale(.8) rotate(-4deg)}100%{transform:none}}
+@keyframes drop{0%{transform:translateY(-60%) scale(.6);opacity:0}100%{transform:none;opacity:1}}
+@keyframes chip{40%{transform:translate(-1px,-3px) scale(1.12)}100%{transform:translate(-1px,-1px)}}
+@keyframes nudge{0%,88%,100%{transform:none}91%{transform:rotate(-8deg) scale(1.08)}94%{transform:rotate(7deg) scale(1.08)}97%{transform:rotate(-4deg)}}
+@keyframes ping{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.6);opacity:0}}
 @media (max-width:640px){
+  .logo{font-size:13.5vw}.hero-in{gap:8px}.hero .mascot{width:26vw}
   .hero .bubble{position:static;display:inline-block;margin-bottom:6px}
   .hero .bubble::after{display:none}
   .row{padding:10px 12px}
   .prices{gap:10px}.pr{font-size:1.12rem}
-  .aside .mascot{width:70px}.bubble{font-size:.74rem;max-width:150px}
+  .aside .mascot{height:104px}.bubble{font-size:.74rem;max-width:150px}
 }
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
@@ -130,14 +161,14 @@ button{font:inherit;color:inherit;cursor:pointer}
 <body>
 
 <header class="hero wrap">
-  <div class="bubble">¡Hacete amigo!</div>
+  <div class="bubble fx">¡Hacete amigo!</div>
   <div class="hero-in">
     <div>
       <h1 class="logo">Ricaso</h1>
       <p class="tagline">Burgers · Lomos · Wraps · Córdoba</p>
       <div class="status" id="status" role="status"><i></i><span></span></div>
     </div>
-    <img class="mascot" src="img/azul.png" width="480" height="468" alt="">
+    <img class="mascot fx i-bob" src="img/azul.webp" width="720" height="701" alt="">
   </div>
   <div class="actions">
     <a class="btn k" href="https://instagram.com/ricasocba" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>@Ricasocba</a>
@@ -165,7 +196,7 @@ button{font:inherit;color:inherit;cursor:pointer}
     <dt>Pedí al</dt><dd><a href="https://wa.me/5493518626600" target="_blank" rel="noopener">351-8626600</a></dd>
     <dt>Atendemos</dt><dd>Todos los días de 12 a 00hs</dd>
   </dl>
-  <div class="card foot-brand"><img class="mascot" src="img/rojo.png" width="480" height="456" alt="" loading="lazy" style="width:110px"><span class="logo">Ricaso</span></div>
+  <div class="card foot-brand"><img class="mascot fx i-groove" src="img/rojo.webp" width="720" height="682" alt="" loading="lazy" decoding="async" style="width:110px"><span class="logo">Ricaso</span></div>
 </footer>
 
 <a class="btn fab" href="https://wa.me/5493518626600" target="_blank" rel="noopener" aria-label="Pedir por WhatsApp">Pedí ya</a>
@@ -178,7 +209,7 @@ const SD = (s, d) => ({Simple: s, Doble: d});
 
 const GROUPS = [
  {t: 'Para comer', secs: [
-  {id: 'burgers', t: 'Burgers', note: 'salen con papas y mayo extra', bubble: 'Hacemos nuestro pan y nuestro propio blend de carne', m: 'blue', boards: [
+  {id: 'burgers', t: 'Burgers', note: 'salen con papas y mayo extra', bubble: 'Hacemos nuestro pan y nuestro propio blend de carne', m: 'burger', boards: [
    {pal: ['c', 'k'], foot: 'Hacela veggie cambiando el medallón por uno de falafel.', items: [
     {n: 'La New York', d: 'Medallón de carne (100g), queso cheddar, panceta crispy, cebolla caramelizada y barbacoa.', p: SD(14800, 17800)},
     {n: 'La Jefa', d: 'Medallón de carne (100g), queso cheddar, panceta crispy, lechuga, tomate, cebolla morada y mayo ricasa.', p: SD(14800, 17800)},
@@ -194,7 +225,7 @@ const GROUPS = [
     {n: 'Patty Melt Changuchito', d: 'Medallón de carne (100g), queso cheddar, pan de molde enmantecado y tostado, panceta crispy y aderezo mil islas.', p: {Doble: 17300}},
    ]},
   ]},
-  {id: 'wraps', t: 'Wraps', note: 'salen con nachos y mayo extra', bubble: 'Podés cambiar los nachos por papas', m: 'red', boards: [
+  {id: 'wraps', t: 'Wraps', note: 'salen con nachos y mayo extra', bubble: 'Podés cambiar los nachos por papas', m: 'wrap', boards: [
    {pal: ['y', 'p'], items: [
     {n: 'De Pollo', d: 'Pechuga de pollo a la plancha, panceta crispy, queso danbo, pimientos asados, crutones, lechuga y mayo ricasa.', p: 17300},
     {n: 'De Pollo Fresco', d: 'Pechuga de pollo a la plancha, queso danbo, palta, choclo salteado, cebolla morada, lechuga y mayo ricasa.', p: 17200},
@@ -217,7 +248,7 @@ const GROUPS = [
     {n: 'Fugazzeta', d: 'Milanesa de carne, cebollas asadas y queso, acompañada de papas fritas o ensalada.', p: 16900},
    ]},
   ]},
-  {id: 'ensaladas', t: 'Ensaladas', bubble: '¡Están muy buenas!', m: 'red', boards: [
+  {id: 'ensaladas', t: 'Ensaladas', bubble: '¡Están muy buenas!', m: 'rojo', boards: [
    {pal: ['c', 'l'], items: [
     {n: 'Pollo', d: 'Pechuga de pollo a la plancha, palta, queso sardo, tomate, crutones, mix de verdes y mayo ricasa.', p: 14500},
     {n: 'Vegeta', d: '5 bolitas de falafel, queso sardo, choclo salteado, tomate, pepinos encurtidos, cebolla morada, mix de verdes y mayo ricasa.', p: 14000},
@@ -237,7 +268,7 @@ const GROUPS = [
     {n: 'Ricasito', d: 'Burger de pollo o carne, queso cheddar, sale con papas fritas y aderezo.', p: 14300},
    ]},
   ]},
-  {id: 'extras', t: 'Extras', bubble: 'Aprovechá las promos para compartir', m: 'blue', boards: [
+  {id: 'extras', t: 'Extras', bubble: 'Aprovechá las promos para compartir', m: 'rulos', boards: [
    {pal: ['p', 'y'], items: [
     {n: 'Medallón de carne', u: '(100g) + cheddar', p: null},
     {n: 'Cheddar', p: 2000},
@@ -259,7 +290,7 @@ const GROUPS = [
     {n: 'Cervezas sin alcohol', d: 'Stella Artois 0.0% 330cc · Corona 0.0% 330cc', p: 5500},
    ]},
   ]},
-  {id: 'con-alcohol', t: 'Bebidas con alcohol', nav: 'Con alcohol', boards: [
+  {id: 'con-alcohol', t: 'Bebidas con alcohol', nav: 'Con alcohol', bubble: '¡Salud!', m: 'azul', boards: [
    {pal: ['y', 'p'], items: [
     {n: 'Fernet Branca + gaseosa cola', u: '(jarro)', p: 8000},
     {n: 'Gin tonic con Old Church', p: 7000},
@@ -304,14 +335,18 @@ const BRANCHES = [
  {n: 'Manantiales II', col: 'k', a: 'Prados de Manantiales, local 6', h: 'Todos los días de 12 a 15 y de 20 a 00hs', tel: '351-6546931'},
 ];
 
-const RAINBOW = `<svg class="deco" viewBox="0 0 120 64" style="width:96px;right:6px;top:-8px" aria-hidden="true"><g fill="none" stroke-width="9" stroke-linecap="round">
+const RAINBOW = `<svg class="deco fx" viewBox="0 0 120 64" style="width:96px;right:6px;top:-8px" aria-hidden="true"><g fill="none" stroke-width="9" stroke-linecap="round">
  <path d="M14 60a46 46 0 0 1 92 0" stroke="#EF4B3F"/><path d="M24 60a36 36 0 0 1 72 0" stroke="#FFD23F"/><path d="M34 60a26 26 0 0 1 52 0" stroke="#B8E04A"/><path d="M44 60a16 16 0 0 1 32 0" stroke="#5BC8EC"/></g></svg>`;
 
 // ---------- render ----------
 const money = n => n == null ? 'consultar' : '$ ' + n.toLocaleString('es-AR');
 const price = (v, label) => `<span class="pr${v == null ? ' ask' : ''}">${label ? `<small>${label}</small>` : ''}${money(v)}</span>`;
-const MASCOTS = {blue: ['img/azul.png', 468], red: ['img/rojo.png', 456]};
-const mascot = m => `<img class="mascot" src="${MASCOTS[m][0]}" width="480" height="${MASCOTS[m][1]}" alt="" loading="lazy" decoding="async">`;
+// archivo, ancho, alto, animación de reposo
+const MASCOTS = {
+  azul: ['azul', 720, 701, 'bob'], rojo: ['rojo', 720, 682, 'groove'],
+  burger: ['burger', 720, 645, 'chomp'], wrap: ['wrap', 704, 720, 'sway'], rulos: ['rulos', 584, 720, 'chomp'],
+};
+const mascot = m => { const [f, w, h, idle] = MASCOTS[m]; return `<img class="mascot fx i-${idle}" src="img/${f}.webp" width="${w}" height="${h}" alt="" loading="lazy" decoding="async">`; };
 
 const row = (it, col) => `<li class="row ${col}">
   <div><h3>${it.n}${it.u ? ` <em>${it.u}</em>` : ''}${it.tag ? `<span class="tag">${it.tag}</span>` : ''}</h3>${it.d ? `<p>${it.d}</p>` : ''}</div>
@@ -320,8 +355,8 @@ const row = (it, col) => `<li class="row ${col}">
 
 const section = s => `<section class="sec" id="${s.id}" aria-labelledby="${s.id}-t">
   <header class="sec-h">
-    <div><h2 class="title" id="${s.id}-t">${s.t}</h2>${s.note ? `<div class="note" style="margin-top:6px">${s.note}</div>` : ''}</div>
-    ${s.bubble ? `<div class="aside"><div class="bubble">${s.bubble}</div>${mascot(s.m)}</div>` : ''}
+    <div><h2 class="title fx" id="${s.id}-t">${s.t}</h2>${s.note ? `<div class="note" style="margin-top:6px">${s.note}</div>` : ''}</div>
+    ${s.bubble ? `<div class="aside"><div class="bubble fx">${s.bubble}</div>${mascot(s.m)}</div>` : ''}
     ${s.deco ? RAINBOW : ''}
   </header>
   ${s.boards.map(b => `<ul class="board">${b.items.map((it, i) => row(it, b.pal[i % b.pal.length])).join('')}${b.foot ? `<li class="foot">${LEAF}${b.foot}</li>` : ''}</ul>`).join('')}
@@ -372,6 +407,19 @@ navUl.addEventListener('click', e => {
 });
 
 // ---------- copiar clave WiFi ----------
+// ---------- animaciones ----------
+const motion = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fx = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('on', e.isIntersecting)), {rootMargin: '60px 0px'});
+document.querySelectorAll('.fx').forEach(el => fx.observe(el));
+const logo = document.querySelector('.hero .logo');
+logo.setAttribute('aria-label', logo.textContent);
+logo.innerHTML = [...logo.textContent].map((ch, i) => `<span aria-hidden="true" style="--i:${i}">${ch}</span>`).join('');
+// al tocar un personaje o el logo: un salto que se suma (composite) a la animación que ya tiene
+const jump = [{transform: 'none'}, {transform: 'translateY(-16px) rotate(-8deg) scale(1.08)'}, {transform: 'translateY(2px) rotate(4deg) scale(.97)'}, {transform: 'none'}];
+document.addEventListener('click', e => { const m = e.target.closest('.mascot'); if (m && motion) m.animate(jump, {duration: 650, easing: 'ease-out', composite: 'add'}); });
+logo.addEventListener('click', () => motion && logo.querySelectorAll('span').forEach((l, i) =>
+  l.animate([{transform: 'none'}, {transform: 'translateY(-18px) scale(1.12,.9)'}, {transform: 'none'}], {duration: 500, delay: i * 60, easing: 'ease-out', composite: 'add'})));
+
 const toast = document.getElementById('toast');
 document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', async () => {
   try { await navigator.clipboard.writeText(b.dataset.copy); toast.textContent = '¡Clave copiada!'; }
